@@ -13,7 +13,7 @@ async function getChromeVersionMac() {
     } catch (err) {
         return null;
     }
-    
+
     const versionPath = path.resolve(path.dirname(chromePath), '../Frameworks/Google Chrome Framework.framework/Versions');
 
     const contents = await readdir(versionPath);
@@ -53,6 +53,10 @@ async function getChromeVersion() {
     if (os === 'darwin') return getChromeVersionMac();
 
     if (os.includes('win')) return getChromeVersionWin();
+
+    console.log(`${os} is not supported`);
+
+    return null;
 
 }
 
