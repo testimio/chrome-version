@@ -13,7 +13,7 @@ async function getChromeVersionMac() {
     } catch (err) {
         return null;
     }
-    
+
     const versionPath = path.resolve(path.dirname(chromePath), '../Frameworks/Google Chrome Framework.framework/Versions');
 
     const contents = await readdir(versionPath);
@@ -46,13 +46,47 @@ async function getChromeVersionWin() {
    
 }
 
+async function getChromeVersionLinux() {
+    
+    let chromePath;
+    try {
+        chromePath = findChrome();
+    } catch (err) {
+        return null;
+    }
+
+    const res = await exec(chromePath + ' --version');
+
+    const version = res.stdout.substr(14).trim();
+    return version;
+
+
+    // const versionPath = path.resolve(path.dirname(chromePath));
+
+    // console.log(versionPath);
+    // return '';
+
+    // const contents = await readdir(versionPath);
+
+    // const versions = contents.filter(a => /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/g.test(a));
+
+    // const latest = versions.sort((a,b) => a<b)[0];
+
+    // return latest;
+   
+}
+
 async function getChromeVersion() {
 
     const os = process.platform;
 
     if (os === 'darwin') return getChromeVersionMac();
-
     if (os.includes('win')) return getChromeVersionWin();
+    if (os === 'linux') return getChromeVersionLinux();
+
+    console.log(`${os} is not supported`);
+
+    return null;
 
 }
 
