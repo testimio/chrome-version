@@ -4,8 +4,7 @@ const exec = util.promisify(require('child_process').exec);
 const path = require('path');
 const readdir = util.promisify(require("fs").readdir);
 
-
-async function getChromeVersionMac() {
+async function getChromeVersionFromCli() {
 
     let chromePath;
     try {
@@ -14,15 +13,11 @@ async function getChromeVersionMac() {
         return null;
     }
 
-    const versionPath = path.resolve(path.dirname(chromePath), '../Frameworks/Google Chrome Framework.framework/Versions');
+    const res = await exec(chromePath.replace(/ /g, '\\ ') + ' --version');
 
-    const contents = await readdir(versionPath);
+    const version = res.stdout.substr(14).trim();
+    return version;
 
-    const versions = contents.filter(a => /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/g.test(a));
-
-    const latest = versions.sort((a,b) => a<b)[0];
-
-    return latest;
 }
 
 async function getChromeVersionWin() {
@@ -34,7 +29,7 @@ async function getChromeVersionWin() {
         return null;
     }
 
-    const versionPath = path.resolve(path.dirname(chromePath));
+    const versionPath = path.dirname(chromePath);
 
     const contents = await readdir(versionPath);
 
@@ -46,43 +41,12 @@ async function getChromeVersionWin() {
    
 }
 
-async function getChromeVersionLinux() {
-    
-    let chromePath;
-    try {
-        chromePath = findChrome();
-    } catch (err) {
-        return null;
-    }
-
-    const res = await exec(chromePath + ' --version');
-
-    const version = res.stdout.substr(14).trim();
-    return version;
-
-
-    // const versionPath = path.resolve(path.dirname(chromePath));
-
-    // console.log(versionPath);
-    // return '';
-
-    // const contents = await readdir(versionPath);
-
-    // const versions = contents.filter(a => /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/g.test(a));
-
-    // const latest = versions.sort((a,b) => a<b)[0];
-
-    // return latest;
-   
-}
-
 async function getChromeVersion() {
 
     const os = process.platform;
 
-    if (os === 'darwin') return getChromeVersionMac();
+    if (os === 'darwin' || os === 'linux') return getChromeVersionFromCli();
     if (os.includes('win')) return getChromeVersionWin();
-    if (os === 'linux') return getChromeVersionLinux();
 
     console.log(`${os} is not supported`);
 
@@ -90,5 +54,10 @@ async function getChromeVersion() {
 
 }
 
+if (require.main === module) {
+    getChromeVersion().then(v => console.log(v));
+}
 
-getChromeVersion().then(v => console.log(v));
+module.exports = {
+    getChromeVersion 
+};
