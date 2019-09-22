@@ -6,22 +6,18 @@ const readdir = util.promisify(require("fs").readdir);
 
 
 async function getChromeVersionMac() {
-    // const chromePath = findChrome().replace(/ /g, '\\ ');
-
 
     const chromePath = findChrome();
-    // console.log(path.dirname(chromePath));
 
     const versionPath = path.resolve(path.dirname(chromePath), '../Frameworks/Google Chrome Framework.framework/Versions');
 
-    const versions = await readdir(versionPath);
+    const contents = await readdir(versionPath);
 
-    const latest = versions.filter(a => a !== 'Current');
+    const versions = contents.filter(a => /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/g.test(a));
 
-    console.log(latest);
-    // console.log(versionPath);
+    const latest = versions.sort((a,b) => a<b)[0];
 
-    return '';
+    return latest;
 }
 
 async function getChromeVersionWin() {
@@ -37,13 +33,13 @@ async function getChromeVersionWin() {
 
     const versionPath = path.resolve(path.dirname(chromePath));
 
-    const versions = await readdir(versionPath);
+    const contents = await readdir(versionPath);
 
-    const latest = versions.filter(a => /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/g.test(a));
+    const versions = contents.filter(a => /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/g.test(a));
 
-    console.log(latest);
+    const latest = versions.sort((a,b) => a<b)[0];
 
-    return '';
+    return latest;
    
 }
 
@@ -55,14 +51,6 @@ async function getChromeVersion() {
 
     if (os.includes('win')) return getChromeVersionWin();
 
-
-
-
-    // const chromePath = findChrome().replace(/ /g, '\\ ');
-    // const res = await exec(chromePath + ' --version');
-
-    // const version = res.stdout.substr(14).trim();
-    // return version;
 }
 
 
