@@ -7,8 +7,13 @@ const readdir = util.promisify(require("fs").readdir);
 
 async function getChromeVersionMac() {
 
-    const chromePath = findChrome();
-
+    let chromePath;
+    try {
+        chromePath = findChrome();
+    } catch (err) {
+        return null;
+    }
+    
     const versionPath = path.resolve(path.dirname(chromePath), '../Frameworks/Google Chrome Framework.framework/Versions');
 
     const contents = await readdir(versionPath);
@@ -26,10 +31,8 @@ async function getChromeVersionWin() {
     try {
         chromePath = findChrome();
     } catch (err) {
-        console.log('no chrome found');
-        process.exit(1);
+        return null;
     }
-    console.log(path.dirname(chromePath));
 
     const versionPath = path.resolve(path.dirname(chromePath));
 
