@@ -1,5 +1,5 @@
 {
-  "name": "chrome-version",
+  "name": "@testim/chrome-version",
   "version": "1.0.0",
   "description": "Finds the version of Chrome that is installed on your machine",
   "main": "index.js",
