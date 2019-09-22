@@ -1,8 +1,10 @@
+"use strict";
+
 const findChrome = require('chrome-finder');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const path = require('path');
-const readdir = util.promisify(require("fs").readdir);
+const readdir = util.promisify(require('fs').readdir);
 
 async function getChromeVersionFromCli() {
 
@@ -54,7 +56,7 @@ async function getChromeVersion() {
 
 }
 
-if (require.main === module) {
+if (require.main == module) {
     getChromeVersion().then(v => console.log(v));
 }
 

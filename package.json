@@ -1,14 +1,17 @@
 {
   "name": "chrome-version",
   "version": "1.0.0",
-  "description": "",
+  "description": "Finds the version of Chrome that is installed on your machine",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint *.js --fix"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Elad Katz",
+  "license": "MIT",
   "dependencies": {
     "chrome-finder": "^1.0.5"
+  },
+  "devDependencies": {
+    "eslint": "^6.4.0"
   }
 }
