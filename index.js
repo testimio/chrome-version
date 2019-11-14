@@ -5,6 +5,7 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const path = require('path');
 const readdir = util.promisify(require('fs').readdir);
+const { execSync } = require('child_process');
 
 async function getChromeVersionFromCli() {
 
@@ -43,11 +44,17 @@ async function getChromeVersionWin() {
    
 }
 
+function getChromeVersionFromOsa() {
+    const version = execSync('osascript -e \'tell application "Google Chrome" to get version\'').toString();
+    return version;
+}
+
 async function getChromeVersion() {
 
     const os = process.platform;
-
-    if (os === 'darwin' || os === 'linux') return getChromeVersionFromCli();
+    
+    if (os === 'darwin') return getChromeVersionFromOsa();
+    if (os === 'linux') return getChromeVersionFromCli();
     if (os.includes('win')) return getChromeVersionWin();
 
     console.log(`${os} is not supported`);
