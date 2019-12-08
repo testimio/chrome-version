@@ -38,9 +38,10 @@ async function getChromeVersionWin() {
 
     const versions = contents.filter(a => /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/g.test(a));
 
-    const latest = versions.sort((a,b) => a<b)[0];
+    // returning oldest in case there is an updated version and chrome still hasn't relaunched
+    const oldest = versions.sort((a,b) => a>b)[0];
 
-    return latest;
+    return oldest;
    
 }
 
