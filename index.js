@@ -47,7 +47,7 @@ async function getChromeVersionWin() {
 
 function getChromeVersionFromOsa() {
     try {
-        const version = execSync('osascript -e \'tell application "Google Chrome" to get version\'').toString();
+        const version = execSync('osascript -e \'tell application "Google Chrome" to get version\'').toString().trim();
         return version;
     } catch (err) {
         return null;
