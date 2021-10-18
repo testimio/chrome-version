@@ -6,6 +6,10 @@
   "scripts": {
     "lint": "eslint *.js --fix"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/testimio/chrome-version.git"
+  },
   "author": "Elad Katz",
   "license": "MIT",
   "homepage": "https://github.com/testimio/chrome-version",
