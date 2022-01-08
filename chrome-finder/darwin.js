@@ -17,8 +17,10 @@ function darwin() {
 
   execSync(
     `${LSREGISTER} -dump` +
-    ' | grep -E -i \'(google chrome( canary)?|chromium).app$\'' +
-    ' | awk \'{$1=""; print $0}\'')
+    ' | grep -E -i \'(google chrome( canary)?' + (includeChromium ? '|chromium' : '') + ').app(\\s\\(0x[0-9a-f]+\\))?$\'' +
+    ' | awk \'sub(/\\(0x[0-9a-f]+\\)/, "")\'' +
+    ' | awk \'{$1=""; print $0}\'' +
+    ' | awk \'{ gsub(/^[ \\t]+|[ \\t]+$/, ""); print }\'')
     .toString()
     .split(newLineRegex)
     .forEach((inst) => {
