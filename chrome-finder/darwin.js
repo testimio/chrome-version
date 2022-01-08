@@ -1,5 +1,5 @@
 const { execSync } = require('child_process');
-const path = require('path');
+const path = require('path').posix;
 const { canAccess, newLineRegex, sort } = require('./util');
 
 function darwin() {
