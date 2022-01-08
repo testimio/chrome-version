@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path').win32;
 const { canAccess } = require('./util');
 
 function win32() {
