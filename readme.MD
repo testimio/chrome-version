@@ -16,4 +16,9 @@ npm install @testim/chrome-version
 })();
 ```
 
+## Testing
+```sh
+npm test
+```
+
 * If no version of chrome is installed on your machine `getChromeVersion` will return null.
