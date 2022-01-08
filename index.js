@@ -18,9 +18,12 @@ async function getChromeVersionFromCli() {
 
     const res = await exec(chromePath.replace(/ /g, '\\ ') + ' --version');
 
-    const version = res.stdout.substr(14).trim();
+    const version = extractChromeVersionNumer(res.stdout);
     return version;
+}
 
+function extractChromeVersionNumer(chromeVersionString) {
+    return chromeVersionString.substr(14).trim();
 }
 
 async function getChromeVersionWin() {
