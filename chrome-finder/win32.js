@@ -1,5 +1,6 @@
 const path = require('path').win32;
 const { canAccess } = require('./util');
+const procesEnv = process.env;
 
 
 function win32(includeChromium = false) {
@@ -11,8 +12,11 @@ function win32(includeChromium = false) {
     ... includeChromium ? ['\\Chromium\\Application\\chrome.exe'] : [],
     // '\\Google\\Chrome Beta\\Application\\chrome.exe',
   ];
-  const prefixes =
-    [process.env.LOCALAPPDATA, process.env.PROGRAMFILES, process.env['PROGRAMFILES(X86)']].filter(prefix => prefix);  // filter out undefined
+  const prefixes = [
+    procesEnv.LOCALAPPDATA,
+    procesEnv.PROGRAMFILES,
+    procesEnv['PROGRAMFILES(X86)']
+  ].filter(prefix => prefix);  // filter out undefined
 
   prefixes.forEach(prefix => suffixes.forEach(suffix => {
     const chromePath = path.join(prefix, suffix);

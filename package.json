@@ -19,6 +19,7 @@
     "version"
   ],
   "devDependencies": {
+    "chai": "^4.3.4",
     "eslint": "^6.4.0",
     "mocha": "^8.4.0",
     "rewire": "^6.0.0"
