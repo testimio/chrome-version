@@ -7,11 +7,11 @@ const path = require('path');
 const readdir = util.promisify(require('fs').readdir);
 const { execSync } = require('child_process');
 
-async function getChromeVersionFromCli() {
+async function getChromeVersionFromCli(includeChromium) {
 
     let chromePath;
     try {
-        chromePath = findChrome();
+        chromePath = findChrome(includeChromium);
     } catch (err) {
         return null;
     }
@@ -26,11 +26,11 @@ function extractChromeVersionNumer(chromeVersionString) {
     return chromeVersionString.substr(14).trim();
 }
 
-async function getChromeVersionWin() {
+async function getChromeVersionWin(includeChromium) {
     
     let chromePath;
     try {
-        chromePath = findChrome();
+        chromePath = findChrome(includeChromium);
     } catch (err) {
         return null;
     }
@@ -48,7 +48,17 @@ async function getChromeVersionWin() {
    
 }
 
-function getChromeVersionFromOsa() {
+function getChromeVersionFromOsa(includeChromium) {
+
+    if (includeChromium) {
+        try {
+            const version = execSync('osascript -e \'tell application "Chromium" to get version\'').toString().trim();
+            return version;
+        } catch (err) {
+            // no-op
+        }
+    }
+
     try {
         const version = execSync('osascript -e \'tell application "Google Chrome" to get version\'').toString().trim();
         return version;
@@ -57,13 +67,21 @@ function getChromeVersionFromOsa() {
     }
 }
 
-async function getChromeVersion() {
+/**
+ * Gets the version of Chrome (or Chromium) that is installed.
+ *
+ * Supports macOS, Linux, and Windows.
+ *
+ * @param {boolean} includeChromium true if we should consider Chromium in our search, false otherwise.
+ * @returns {string} the version number of Chrome (or Chromium), or null if the OS is not supported.
+ */
+async function getChromeVersion(includeChromium = false) {
 
     const os = process.platform;
     
-    if (os === 'darwin') return getChromeVersionFromOsa();
-    if (os === 'linux') return getChromeVersionFromCli();
-    if (os.includes('win')) return getChromeVersionWin();
+    if (os === 'darwin') return getChromeVersionFromOsa(includeChromium);
+    if (os === 'linux') return getChromeVersionFromCli(includeChromium);
+    if (os.includes('win')) return getChromeVersionWin(includeChromium);
 
     console.log(`${os} is not supported`);
 

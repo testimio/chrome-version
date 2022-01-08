@@ -1,6 +1,6 @@
 # chrome-version
 
-Finds the version of Chrome that is installed on your machine.
+Finds the version of Chrome (or Chromium) that is installed on your machine.
 
 ## Installation
 ```sh
@@ -11,7 +11,8 @@ npm install @testim/chrome-version
 ```js
 (async () => {
     const { getChromeVersion } = require('chrome-version');
-    const version = await getChromeVersion();
+    const includeChromium = false;  // NOTE: set to true to also search for Chromium
+    const version = await getChromeVersion(includeChromium);
     console.log(version);
 })();
 ```

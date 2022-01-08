@@ -2,11 +2,11 @@ const { execSync } = require('child_process');
 const path = require('path').posix;
 const { canAccess, newLineRegex, sort } = require('./util');
 
-function darwin() {
+function darwin(includeChromium = false) {
   const suffixes = [
     // '/Contents/MacOS/Google Chrome Canary', 
     '/Contents/MacOS/Google Chrome', 
-    // '/Contents/MacOS/Chromium'
+    ... includeChromium ? ['/Contents/MacOS/Chromium'] : []
   ];
 
   const LSREGISTER = '/System/Library/Frameworks/CoreServices.framework' +
@@ -34,13 +34,13 @@ function darwin() {
 
   // Retains one per line to maintain readability.
   const priorities = [
-    // { regex: new RegExp(`^${process.env.HOME}/Applications/.*Chromium.app`), weight: 49 },
+    { regex: new RegExp(`^${process.env.HOME}/Applications/.*Chromium.app`), weight: 49 },
     { regex: new RegExp(`^${process.env.HOME}/Applications/.*Chrome.app`), weight: 50 },
     // { regex: new RegExp(`^${process.env.HOME}/Applications/.*Chrome Canary.app`), weight: 51 },
-    // { regex: /^\/Applications\/.*Chromium.app/, weight: 99 },
+    { regex: /^\/Applications\/.*Chromium.app/, weight: 99 },
     { regex: /^\/Applications\/.*Chrome.app/, weight: 100 },
     // { regex: /^\/Applications\/.*Chrome Canary.app/, weight: 101 },
-    // { regex: /^\/Volumes\/.*Chromium.app/, weight: -3 },
+    { regex: /^\/Volumes\/.*Chromium.app/, weight: -3 },
     { regex: /^\/Volumes\/.*Chrome.app/, weight: -2 },
     // { regex: /^\/Volumes\/.*Chrome Canary.app/, weight: -1 }
   ];
