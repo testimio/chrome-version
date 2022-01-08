@@ -41,6 +41,22 @@ describe('Chrome Finder', function() {
     });
   });
 
+  describe('extractChromiumVersionNumer from Chromium 90.0.4430.212 Fedora Project', function() {
+    it('should return "90.0.4430.212"', function() {
+      const versionString = 'Chromium 90.0.4430.212 Fedora Project';
+      const versionNumber = extractChromeVersionNumer(versionString);
+      expect(versionNumber).to.equal('90.0.4430.212');
+    });
+  });
+
+  describe('extractChromiumVersionNumer from Chromium 98.0.4753.0', function() {
+    it('should return "98.0.4753.0"', function() {
+      const versionString = 'Chromium 98.0.4753.0';
+      const versionNumber = extractChromeVersionNumer(versionString);
+      expect(versionNumber).to.equal('98.0.4753.0');
+    });
+  });
+
   describe('getChromeVersionFromOsa when includeChromium=false', function() {
     it('should only find Chrome', function() {
       const includeChromium = false;
