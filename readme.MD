@@ -1,5 +1,7 @@
 # chrome-version
 
+[![Build Status](https://github.com/testimio/chrome-version/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/testimio/chrome-version/actions/workflows/ci.yml)
+
 Finds the version of Chrome (or Chromium) that is installed on your machine.
 
 ## Installation
