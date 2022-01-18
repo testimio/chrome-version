@@ -84,16 +84,20 @@ describe('Chrome Finder', function() {
 
       const mockVersion = '98.0.4753.0';
 
-      var execSyncCommand;
+      var execSyncCommands = [];
       chromeVersionModule.__set__('execSync', function(command) {
-          execSyncCommand = command;
+          execSyncCommands.push(command);
+          if (execSyncCommands.length == 1) {
+            throw "not found"
+          }
           return Buffer.from(mockVersion);
       });
 
       const version = getChromeVersionFromOsa(includeChromium);
 
-      expect(execSyncCommand).to.not.include('Google Chrome');
-      expect(execSyncCommand).to.include('Chromium');
+      expect(execSyncCommands.length).equal(2);
+      expect(execSyncCommands[0]).to.include('Google Chrome');
+      expect(execSyncCommands[1]).to.include('Chromium');
 
       expect(version).to.equal(mockVersion);
     });

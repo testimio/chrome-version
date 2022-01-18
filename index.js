@@ -50,17 +50,18 @@ async function getChromeVersionWin(includeChromium) {
 
 function getChromeVersionFromOsa(includeChromium) {
 
-    if (includeChromium) {
-        try {
-            const version = execSync('osascript -e \'tell application "Chromium" to get version\'').toString().trim();
-            return version;
-        } catch (err) {
-            // no-op
+    try {
+        const version = execSync('osascript -e \'tell application "Google Chrome" to get version\'').toString().trim();
+        return version;
+    } catch (err) {
+        if (!includeChromium) {
+            return null;
         }
+        // else fall-through to check for Chromium below
     }
 
     try {
-        const version = execSync('osascript -e \'tell application "Google Chrome" to get version\'').toString().trim();
+        const version = execSync('osascript -e \'tell application "Chromium" to get version\'').toString().trim();
         return version;
     } catch (err) {
         return null;
