@@ -1,6 +1,6 @@
 {
   "name": "@testim/chrome-version",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "Finds the version of Chrome that is installed on your machine",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "https://github.com/testimio/chrome-version.git"
   },
-  "author": "Elad Katz",
+  "author": "Testim",
   "license": "MIT",
   "homepage": "https://github.com/testimio/chrome-version",
   "keywords": [
