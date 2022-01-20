@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const findChrome = require('./chrome-finder');
 const util = require('util');
