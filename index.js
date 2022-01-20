@@ -27,7 +27,7 @@ function extractChromeVersionNumer(chromeVersionString) {
 }
 
 async function getChromeVersionWin(includeChromium) {
-    
+
     let chromePath;
     try {
         chromePath = findChrome(includeChromium);
@@ -42,10 +42,9 @@ async function getChromeVersionWin(includeChromium) {
     const versions = contents.filter(a => /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/g.test(a));
 
     // returning oldest in case there is an updated version and chrome still hasn't relaunched
-    const oldest = versions.sort((a,b) => a>b)[0];
+    const oldest = versions.sort((a, b) => a > b)[0];
 
     return oldest;
-   
 }
 
 function getChromeVersionFromOsa(includeChromium) {
@@ -68,6 +67,20 @@ function getChromeVersionFromOsa(includeChromium) {
     }
 }
 
+
+async function innerGetChromeVersion(includeChromium = false) {
+
+    const os = process.platform;
+
+    if (os === 'darwin') return getChromeVersionFromOsa(includeChromium);
+    if (os === 'linux') return getChromeVersionFromCli(includeChromium);
+    if (os.includes('win')) return getChromeVersionWin(includeChromium);
+
+    console.log(`${os} is not supported`);
+
+    return null;
+}
+
 /**
  * Gets the version of Chrome (or Chromium) that is installed.
  *
@@ -77,17 +90,11 @@ function getChromeVersionFromOsa(includeChromium) {
  * @returns {string} the version number of Chrome (or Chromium), or null if the OS is not supported.
  */
 async function getChromeVersion(includeChromium = false) {
-
-    const os = process.platform;
-    
-    if (os === 'darwin') return getChromeVersionFromOsa(includeChromium);
-    if (os === 'linux') return getChromeVersionFromCli(includeChromium);
-    if (os.includes('win')) return getChromeVersionWin(includeChromium);
-
-    console.log(`${os} is not supported`);
-
-    return null;
-
+    const res = await innerGetChromeVersion(includeChromium);
+    if (typeof res === 'string') {
+        return res.trim();
+    }
+    return res;
 }
 
 if (require.main == module) {
@@ -95,5 +102,5 @@ if (require.main == module) {
 }
 
 module.exports = {
-    getChromeVersion 
+    getChromeVersion
 };
