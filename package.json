@@ -4,7 +4,8 @@
   "description": "Finds the version of Chrome that is installed on your machine",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint *.js --fix"
+    "lint": "eslint *.js --fix",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -13,8 +14,14 @@
   "author": "Elad Katz",
   "license": "MIT",
   "homepage": "https://github.com/testimio/chrome-version",
-  "keywords": ["chrome", "version" ],
+  "keywords": [
+    "chrome",
+    "version"
+  ],
   "devDependencies": {
-    "eslint": "^6.4.0"
+    "chai": "^4.3.4",
+    "eslint": "^6.4.0",
+    "mocha": "^8.4.0",
+    "rewire": "^6.0.0"
   }
 }
