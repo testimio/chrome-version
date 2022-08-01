@@ -12,7 +12,7 @@ npm install @testim/chrome-version
 ## Use
 ```js
 (async () => {
-    const { getChromeVersion } = require('chrome-version');
+    const { getChromeVersion } = require('@testim/chrome-version');
     const includeChromium = false;  // NOTE: set to true to also search for Chromium
     const version = await getChromeVersion(includeChromium);
     console.log(version);
