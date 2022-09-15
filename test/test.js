@@ -41,6 +41,14 @@ describe('Chrome Finder', function() {
     });
   });
 
+  describe('extractChromiumVersionNumer from Chromium 105.0.5195.102 built on Debian 11.4, running on Debian 11.5', function() {
+    it('should return "105.0.5195.102"', function() {
+      const versionString = 'Chromium 105.0.5195.102 built on Debian 11.4, running on Debian 11.5';
+      const versionNumber = extractChromeVersionNumer(versionString);
+      expect(versionNumber).to.equal('105.0.5195.102');
+    });
+  });
+
   describe('extractChromiumVersionNumer from Chromium 90.0.4430.212 Fedora Project', function() {
     it('should return "90.0.4430.212"', function() {
       const versionString = 'Chromium 90.0.4430.212 Fedora Project';
