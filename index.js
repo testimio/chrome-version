@@ -23,7 +23,7 @@ async function getChromeVersionFromCli(includeChromium) {
 }
 
 function extractChromeVersionNumer(chromeVersionString) {
-    return chromeVersionString.replace(/.+\s([0-9]+(\.[0-9]+)*)\s?.*/, '$1');
+    return chromeVersionString.replace(/Chromium\s(([0-9]+\.?)+)\s?.*/, '$1');
 }
 
 async function getChromeVersionWin(includeChromium) {
