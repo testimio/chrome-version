@@ -26,6 +26,8 @@ function extractChromeVersionNumer(chromeVersionString) {
     return chromeVersionString.replace(/\D*(([0-9]+\.?)+)\s?.*/, '$1');
 }
 
+const chromeVersionRegex = /^(\d+\.){3}\d+$/g;
+
 async function getChromeVersionWin(includeChromium) {
 
     let chromePath;
@@ -35,16 +37,38 @@ async function getChromeVersionWin(includeChromium) {
         return null;
     }
 
+    const powershell = await execAndAttemptExtractingChromeVersion(`powershell -command "&{(Get-Item '${chromePath}').VersionInfo.ProductVersion}"`);
+    if (powershell !== null) {
+        return powershell;
+    }
+
+    const registry = await execAndAttemptExtractingChromeVersion('reg query "HKEY_CURRENT_USER\\Software\\Google\\Chrome\\BLBeacon" /v version');
+    if (registry !== null) {
+        return registry;
+    }
+
     const versionPath = path.dirname(chromePath);
 
     const contents = await readdir(versionPath);
 
-    const versions = contents.filter(a => /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/g.test(a));
+    const versions = contents.filter(a => chromeVersionRegex.test(a));
 
     // returning oldest in case there is an updated version and chrome still hasn't relaunched
     const oldest = versions.sort((a, b) => a > b)[0];
 
     return oldest;
+}
+
+async function execAndAttemptExtractingChromeVersion(command) {
+    try {
+        const { stdout } = await exec(command);
+        const version = extractChromeVersionNumer(stdout).trim();
+        if (chromeVersionRegex.test(version)) {
+            return version;
+        }
+    } catch (err) { ''; }
+
+    return null;
 }
 
 function getChromeVersionFromOsa(includeChromium) {
